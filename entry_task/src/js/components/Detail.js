@@ -131,7 +131,7 @@ function Detail (props) {
                 } else if (mins >= 1) {
                     obj.desc = `${mins} minutes ago`;
                 } else {
-                    obj.desc = `${secs} seconds ago;`
+                    obj.desc = `${secs} seconds ago`;
                 }
                 return obj;
             });
@@ -226,7 +226,6 @@ function Detail (props) {
         const isDetailsRange = isElementInViewport(details);
         const isParticipantsRange = isElementInViewport(participants);
         const isCommentsRange = isElementInViewport(comments);
-        console.log(isDetailsRange, isParticipantsRange, isCommentsRange);
         if (isDetailsRange) {
             setTabOn('d');
         } else if (isParticipantsRange) {

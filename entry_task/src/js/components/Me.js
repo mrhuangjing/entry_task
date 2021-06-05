@@ -3,8 +3,12 @@ import Top from './common/Top.js';
 import Empty from './common/Empty.js';
 import List from './common/List.js';
 import { connect } from 'react-redux';
+import { useState } from 'react';
 
 function  Me (props) {
+    const [type, setType] = useState('likes');
+
+    
 
     return (
         <div className="me">
@@ -19,20 +23,20 @@ function  Me (props) {
                 </div>
             </div>
             <div className="me_tabs">
-                <a href="#likes" className="me_tabs_item me_tabs_item_likes on">
+                <a href="#likes" className={["me_tabs_item me_tabs_item_likes", type == 'likes' ? "on" : ""].join(" ")} onClick={() => setType('likes')}>
                     <span>Likes</span>
                 </a>
                 <span>|</span>
-                <a href="#going" className="me_tabs_item me_tabs_item_going on">
+                <a href="#going" className={["me_tabs_item me_tabs_item_going", type == 'going' ? "on" : ""].join(" ")} onClick={() => setType('going')}>
                     <span>Going</span>
                 </a>
                 <span>|</span>
-                <a href="#past" className="me_tabs_item me_tabs_item_past on">
+                <a href="#past" className={["me_tabs_item me_tabs_item_past", type == 'past' ? "on" : ""].join(" ")} onClick={() => setType('past')}>
                     <span>Past</span>
                 </a>
             </div>
             {/* <Empty /> */}
-            <List />
+            <List type={type} />
         </div>
     );
 }

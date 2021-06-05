@@ -28,11 +28,6 @@ function Home (props) {
         setFilterDesc(desc);
         setShowFilter(!showFilter);
         setShowResult(true);
-        console.log(']]]]]', date,channel, desc)
-    }
-
-    function handleResult (total) {
-        setResultNum(total);
     }
 
     function handleClearSearch () {
@@ -67,7 +62,7 @@ function Home (props) {
                 {
                     resultNum == 0 && (<Empty />)
                 }
-                <List date={filterDate} channel={filterChannel} transferResult={handleResult}/>
+                <List date={filterDate} channel={filterChannel} transferResult={(total) => setResultNum(total)}/>
             </div>
         </>
     );

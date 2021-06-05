@@ -11,12 +11,6 @@ import { connect } from 'react-redux';
 
 function List (props) {
     const [dataList, setDataList] = useState([]);
-    // const pageState = {
-    //     pageSize: 5,
-    //     pageNum: 0,
-    //     isLoading: false,
-    //     isEnd: false
-    // };
     const [pageState, setPageState] = useState({
         pageSize: 5,
         pageNum: 0,
@@ -24,12 +18,10 @@ function List (props) {
         isEnd: false
     });
     let isUnmount = false;
-    let global = {x: 1}
-    let t = 99;
 
     function goDetail (index) {
         const id = dataList[index].id;
-        // props.history.push({ pathname: '/detail', query: { id } });
+        props.history.push({ pathname: '/detail', query: { id } });
     }
 
     async function handleCheckClick (e, index) {
@@ -78,108 +70,100 @@ function List (props) {
         }
     }
 
-    async function queryDataList () {
-        // if (pageState.isLoading || pageState.isEnd) return;
-        const a = pageState.pageNum;
-        global.x += 1;
-        t++;
-        console.log(global, t)
-        setPageState({...pageState, isLoading: false, pageNum: a + 5});
-        setDataList([1,2,3,4,5]);
+    async function queryDataList (fromStart) {
+        console.log('+++', pageState.isLoading)
+        if (pageState.isLoading || pageState.isEnd) return;
+        setPageState({...pageState, isLoading: true});
 
-        // const { userInfo } = store.getState();
-        // try {
-        //     const res = await model.queryDataList({
-        //         params: {
-        //             before: props.date ? props.date.start : '',
-        //             after: props.date ? props.date.end : '',
-        //             channels: props.channel ? props.channel.join(',') : '',
-        //             offset: pageState.pageNum,
-        //             limit: pageState.pageSize
-        //         },
-        //         token: userInfo.token
-        //     });
+        const { userInfo } = store.getState();
+        try {
+            const res = await model.queryDataList({
+                params: {
+                    before: props.date ? props.date.start : '',
+                    after: props.date ? props.date.end : ( props.type == 'past' ? moment(new Date()).valueOf() : '' ),
+                    channels: props.channel ? props.channel.join(',') : '',
+                    offset: fromStart ? 0 : pageState.pageNum,
+                    limit: pageState.pageSize
+                },
+                token: userInfo.token
+            });
 
-        //     const list = res.events.map(el => {
-        //         const obj = {
-        //             id: el.id,
-        //             avatar: el.creator.avatar,
-        //             username: el.creator.username,
-        //             channel: el.channel.name,
-        //             title: el.name,
-        //             time: `${moment(el.begin_time).format('YYYY/MM/DD HH:mm')}-${moment(el.end_time).format('YYYY/MM/DD HH:mm')}`,
-        //             content: el.description,
-        //             isGoing: el.me_going,
-        //             isLike: el.me_likes,
-        //             likesCount: el.likes_count,
-        //             goingsCount: el.goings_count
-        //         };
-        //         if (el.images && el.images.length) {
-        //             if (el.images[1]) {
-        //                 obj.pic = el.images[1];
-        //             } else {
-        //                 obj.pic = el.images[0];
-        //             }
-        //         }
-        //         return obj;
-        //     });
+            const list = res.events.filter(el => {
+                if (!props.type) {
+                    return true;
+                } else if (props.type === 'likes' && el.me_likes) {
+                    return true;
+                } else if (props.type === 'going' && el.me_going) {
+                    return true;
+                } 
+                // else if (props.type === 'past') {
+                //     const now = new Date();
+                //     const end = new Date(el.end_time);
+                //     return (now - end > 0);
+                // }
+                return false;
+            }).map(el => {
+                const obj = {
+                    id: el.id,
+                    avatar: el.creator.avatar,
+                    username: el.creator.username,
+                    channel: el.channel.name,
+                    title: el.name,
+                    time: `${moment(el.begin_time).format('YYYY/MM/DD HH:mm')}-${moment(el.end_time).format('YYYY/MM/DD HH:mm')}`,
+                    content: el.description,
+                    isGoing: el.me_going,
+                    isLike: el.me_likes,
+                    likesCount: el.likes_count,
+                    goingsCount: el.goings_count
+                };
+                if (el.images && el.images.length) {
+                    if (el.images[1]) {
+                        obj.pic = el.images[1];
+                    } else {
+                        obj.pic = el.images[0];
+                    }
+                }
+                return obj;
+            });
 
-        //     if (props.transferResult) {
-        //         props.transferResult(res.total);
-        //     }
-
-        //     if (!isUnmount) {
-        //         setDataList(dataList.concat(list));
-        //     }
-        //     if (!res.hasMore) {
-        //         pageState.isEnd = true;
-        //     }
-        //     pageState.pageNum += pageState.pageSize;
-        //     // pageState.isLoading = false;
-        // } catch (e) {
-        //     console.log('ppppp', e)
-        //     pageState.isEnd = true;
-        // }
-    }
-
-    useEffect(() => {
-        pageState.pageNum = 0;
-        setDataList([]);
-        queryDataList();
-
-        return () => {
-            isUnmount = true;
-            $(window).off('scroll');
-        };
-    }, [props]);
-
-    // 翻页判断
-    function isNext () {
-        const $el = $('.list_content');
-        if ($el.length) {
-            const elOffset = $el.offset();
-            const elBottom = elOffset.top + elOffset.height;
-            const winBottom = tool.getScrollTop() + $(window).height();
-            // console.log(winBottom , elBottom)
-            return winBottom > elBottom - 5;
+            if (props.transferResult) {
+                props.transferResult(res.total);
+            }
+            if (!isUnmount) {
+                fromStart ? setDataList(list) : setDataList(dataList.concat(list));
+            }
+            if (!res.hasMore) {
+                setPageState({...pageState, isEnd: true});
+            }
+            setPageState({...pageState, pageNum: (fromStart ? 0 : pageState.pageNum) + pageState.pageSize, isLoading: false});
+        } catch (e) {
+            setPageState({...pageState, isEnd: true});
         }
     }
 
-    function onScrollNext () {
-        // const fn = tool.throttle(() => {
-            console.log('++', pageState)
-            // if (isNext() && !pageState.isLoading && !pageState.isEnd) {
-                queryDataList();
-            // }
-        // }, 0.5);
-        // fn();
+    useEffect(() => {
+        queryDataList(true);
+
+        return () => {
+            isUnmount = true;
+        };
+    }, [props.date, props.channel, props.type]);
+
+    // 翻页判断
+    function isNext () {
+        const $el = document.querySelector('.list_content');
+        return ($el.scrollHeight - $el.scrollTop - $el.clientHeight < 15);
     }
 
-    // 滚动事件绑定
-    // $(window).on('scroll', tool.throttle(onScrollNext, 0.5));
+    function onScrollNext () {
+        console.log('++', pageState)
+        if (isNext() && !pageState.isLoading && !pageState.isEnd) {
+            queryDataList();
+        }
+    }
 
     return (
-        <div className="list_content" style={{ height: `${window.innerHeight}px` }} onScroll={onScrollNext}>
+        <div className="list_content" style={{ height: `${window.innerHeight - 50}px` }} onScroll={onScrollNext}>
             {
                 dataList.map((el, index) => {
                     return (
@@ -209,30 +193,8 @@ function List (props) {
                     );
                 })
             }
-            {/* {
-                [1,2,3,4,5].map((el, index) => {
-                    return (<div className="list_content_item" key={index}>
-                    <div className="list_content_item_line">
-                        <img className="list_content_item_avatar"  />
-                        <div className="list_content_item_username"></div>
-                        <div className="list_content_item_channel"></div>
-                    </div>
-                    <div className="list_content_item_title" >
-                        
-                    </div>
-                    <div className="list_content_item_time"></div>
-                    <div className="list_content_item_con">
-                        
-                    </div>
-                    <div className="list_content_item_line">
-                        
-                    </div>
-                </div>);
-                })
-            } */}
-            
             {
-                dataList.length ? (<div className="list_content_loading">
+                (dataList.length && pageState.isEnd) ? (<div className="list_content_loading">
                     <Icon type="loading" className="list_content_loading_icon" />
                 </div>) : ''
             }
