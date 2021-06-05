@@ -1,0 +1,21 @@
+.empty {
+    width: rem(320);
+    padding-top: rem(76);
+    margin: 0 auto;
+
+    &_ball {
+        width: rem(60);
+        height: rem(60);
+        margin: 0 auto;
+        background: url(../images/common/no-activity.svg) no-repeat;
+    }
+
+    &_desc {
+        margin-top: rem(14);
+        font-size: rem(14);
+        color: #BABABA;
+        height: rem(18);
+        line-height: rem(18);
+        text-align: center;
+    }
+}

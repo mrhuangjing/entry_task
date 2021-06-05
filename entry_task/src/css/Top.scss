@@ -1,0 +1,36 @@
+.top {
+    width: rem(320);
+    height: rem(40);
+    background-color: #8560A9;
+    position: relative;
+    overflow: hidden;
+
+    &_home {
+        width: rem(18);
+        height: rem(18);
+        background: url(../images/detail/home.svg) no-repeat;
+        background-size: cover;
+        margin: rem(11) 0 0 rem(19);
+    }
+
+    &_cat {
+        width: rem(20.9);
+        height: rem(24);
+        position: absolute;
+        top: rem(8);
+        left: 50%;
+        transform: translateX(-50%);
+        background: url(../images/detail/cat.svg) no-repeat;
+        background-size: cover;
+    }
+
+    &_me {
+        display: block;
+        width: rem(24);
+        height: rem(24);
+        position: absolute;
+        top: rem(7);
+        right: rem(14);
+        border-radius: 50%;
+    }
+}

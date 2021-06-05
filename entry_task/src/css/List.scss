@@ -1,0 +1,175 @@
+.list_content {
+    width: rem(320);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    box-sizing: border-box;
+    padding-left: rem(16);
+    background-color: #FFFFFF;
+
+    &_item {
+        height: rem(229);
+        box-sizing: border-box;
+        border-bottom: rem(2) solid #E8E8E8;
+        overflow: hidden;
+        padding: rem(21) rem(16) 0 0;
+        position: relative;
+
+        &_line {
+            font-size: 0;
+            height: rem(20);
+            & div {
+                display: inline-block;
+            }
+        }
+
+        &_avatar {
+            display: inline-block;
+            border-radius: 50%;
+            width: rem(20);
+            height: rem(20);
+        }
+
+        &_username {
+            height: rem(15);
+            line-height: rem(15);
+            font-size: rem(12);
+            margin: rem(3) 0 0 rem(8);
+            vertical-align: top;
+        }
+
+        &_channel {
+            height: rem(20);
+            line-height: rem(20);
+            text-align: center;
+            border: rem(1) solid #D3C1E5;
+            border-radius: rem(10);
+            color: #8560A9;
+            font-size: rem(12);
+            float: right;
+            padding: 0 rem(6);
+            box-sizing: border-box;
+        }
+
+        &_title {
+            font-size: rem(18);
+            color: #453257;
+            margin: rem(8) 0 rem(15);
+            // width: rem(288);
+            height: rem(46);
+            line-height: rem(23);
+            overflow: hidden;
+            display: -webkit-box;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        &_pic {
+            width: rem(64);
+            height: rem(64);
+            position: absolute;
+            right: rem(16);
+            top: rem(44);
+        }
+
+        &_time {
+            height: rem(15);
+            color: #8560A9;
+            font-size: rem(12);
+            padding-left: rem(17);
+            position: relative;
+            margin-bottom: rem(12);
+
+            &::before {
+                content: '';
+                display: block;
+                width: rem(12);
+                height: rem(12);
+                position: absolute;
+                left: 0;
+                top: 0;
+                background: url(../images/list/time.svg) no-repeat;
+                background-size: cover;
+            }
+        }
+
+        &_con {
+            width: rem(288);
+            height: rem(54);
+            margin-bottom: rem(12);
+            line-height: rem(18);
+            color: #67616D;
+            font-size: rem(14);
+            overflow: hidden;
+            display: -webkit-box;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        &_actIcon {
+            width: rem(12);
+            height: rem(11);
+            background: url(../images/list/check.svg) no-repeat;
+            background-size: cover;
+            margin: rem(1) rem(5) 0 0;
+
+            &.on {
+                background: url(../images/list/check_on.svg) no-repeat;
+                background-size: cover;
+            }
+        }
+
+        &_actDesc {
+            height: rem(15);
+            line-height: rem(15);
+            vertical-align: top;
+            color: #AC8EC9;
+            font-size: rem(12);
+            margin-right: rem(30);
+
+            &.on {
+                color: #453257;
+            }
+        }
+
+        &_likeIcon {
+            width: rem(12);
+            height: rem(12);
+            margin: rem(2) rem(5) 0 0;
+            background: url(../images/list/like.svg) no-repeat;
+            background-size: cover;
+            cursor: pointer;
+
+            &.on {
+                background: url(../images/list/like_on.svg) no-repeat;
+                background-size: cover;
+            }
+        }
+
+        &_likeDesc {
+            height: rem(15);
+            line-height: rem(15);
+            vertical-align: top;
+            color: #AC8EC9;
+            font-size: rem(12);
+            cursor: pointer;
+
+            &.on {
+                color: #453257;
+            }
+        }
+    }
+
+    &_loading {
+        height: rem(40);
+        box-sizing: border-box;
+        position: relative;
+        
+        &_icon {
+            position: absolute;
+            top: rem(10);
+            left: 45%;
+        }
+    }
+}

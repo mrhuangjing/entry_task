@@ -1,0 +1,161 @@
+.me {
+    width: rem(320);
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    position: relative;
+    margin: 0 auto;
+    background-color: #FAFAFA;
+    font-size: rem(14);
+    color: #67616D;
+
+    &_info {
+        height: rem(215);
+        border-bottom: rem(2) solid #E8E8E8;
+        padding-top: rem(36);
+        box-sizing: border-box;
+
+        &_icon {
+            width: rem(72);
+            height: rem(72);
+            border: rem(2) solid #D3C1E5;
+            border-radius: 50%;
+            margin: 0 auto rem(24);
+
+            & img {
+                border-radius: 50%;
+                width: rem(72);
+                height: rem(72);
+            }
+        }
+
+        &_username {
+            margin: 0 auto rem(8);
+            font-size: rem(24);
+            height: rem(31);
+            line-height: rem(31);
+            text-align: center;
+        }
+
+        &_email {
+            margin: 0 auto;
+            color: #8560A9;
+            text-align: center;
+            height: rem(18);
+            
+            & span {
+                padding-left: rem(22);
+                position: relative;
+
+                &::before {
+                    content: '';
+                    display: block;
+                    width: rem(16);
+                    height: rem(15);
+                    position: absolute;
+                    top: rem(2.5);
+                    left: 0;
+                    background: url(../images/me/email.svg) no-repeat;
+                    background-size: cover;
+                }
+            }
+        }
+    }
+
+    &_tabs {
+        height: rem(47);
+        box-sizing: border-box;
+        border-bottom: rem(2) solid #E8E8E8;
+        display: flex;
+        color: #8C8C8C;
+        font-size: rem(12);
+        line-height: rem(45);
+
+        & > span {
+            color: #E8E8E8;
+        }
+
+        &_item {
+            flex: 1;
+            text-align: center;
+            display: block;
+
+            & span {
+                display: inline-block;
+                padding-left: rem(25);
+                position: relative;
+            }
+
+            &.on span {
+                color: #AECB4F;
+                font-weight: bold;
+            }
+
+            &_likes span {
+                color: #8C8C8C;
+
+                &::before {
+                    content: '';
+                    display: block;
+                    width: rem(16.7);
+                    height: rem(16.7);
+                    background: url(../images/me/like.svg) no-repeat;
+                    background-size: cover;
+                    position: absolute;
+                    left: rem(3.5);
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+            }
+
+            &_likes.on span::before {
+                background: url(../images/me/like_on.svg) no-repeat;
+                background-size: cover;
+            }
+
+            &_going span {
+                color: #8C8C8C;
+
+                &::before {
+                    content: '';
+                    display: block;
+                    width: rem(16.7);
+                    height: rem(16.7);
+                    background: url(../images/me/check.svg) no-repeat;
+                    background-size: cover;
+                    position: absolute;
+                    left: rem(3.5);
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+            }
+
+            &_going.on span::before {
+                background: url(../images/me/check_on.svg) no-repeat;
+                background-size: cover;
+            }
+
+            &_past span {
+                color: #8C8C8C;
+
+                &::before {
+                    content: '';
+                    display: block;
+                    width: rem(16.7);
+                    height: rem(16.7);
+                    background: url(../images/me/past.svg) no-repeat;
+                    background-size: cover;
+                    position: absolute;
+                    left: rem(3.5);
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+            }
+
+            &_past.on span::before {
+                background: url(../images/me/past_on.svg) no-repeat;
+                background-size: cover;
+            }
+        }
+    }
+}

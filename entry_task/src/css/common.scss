@@ -1,0 +1,85 @@
+$rem_grid: 20 !default;
+@function rem($val){
+    $rem : $val / $rem_grid;
+    @if $rem == 0 {
+        @return #{$rem} ;
+    }@else{
+        @return $rem / ($rem * 0 + 1) * 1rem; // 带不带px单位都支持
+    }
+}
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+input {
+    border: none;
+    -moz-appearance: none;
+    -webkit-appearance : none ; /*解决ios上按钮的圆角问题*/
+    border-radius: 0; /*解决ios上输入框圆角问题*/
+    outline: medium; /*去掉鼠标点击的默认黄色边框*/
+}
+html {
+    font-size: 20px;
+    // font-size: 5.33333vw;
+    font-size: 6.25vw;
+}
+@media screen and (max-width: 310px) {
+    html {
+        font-size:17.06667px
+    }
+}
+@media screen and (min-width: 540px) {
+    html {
+        font-size:28.8px;
+    }
+}
+body {
+    background-color: #fff;
+    margin: 0 auto !important;
+    min-width: 320px;
+    max-width: 540px;
+    font-size: 14px;
+    font-family: "PingFang SC";
+    // line-height: 1.5;
+}
+html, body {
+    // height: 100%;
+    position: relative;
+}
+
+/*包含以下四种的链接*/
+a {
+    text-decoration: none;
+}
+/*正常的未被访问过的链接*/
+a:link {
+    text-decoration: none;
+}
+/*已经访问过的链接*/
+a:visited {
+    text-decoration: none;
+}
+/*鼠标划过(停留)的链接*/
+a:hover {
+    text-decoration: none;
+}
+/* 正在点击的链接*/
+a:active {
+    text-decoration: none;
+}
+
+button {
+    /*消除button的默认样式*/
+    /*这种写法是对所有的button标签同时生效*/
+    margin: 0px;
+    padding: 0px;
+    /*自定义边框*/
+    border: 0px;
+    /*消除默认点击蓝色边框效果*/
+    outline: none;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+}
