@@ -11,7 +11,29 @@ import { withRouter } from "react-router-dom";
 function Login (props) {
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
-    const { setUserInfo } = props;
+    const { setUserInfo, lang } = props;
+    const textConfig = {
+        actDesc: {
+            en: 'FIND THE MOST LOVED ACTIVITIES',
+            zh: '找 到 最 爱 的 活 动'
+        },
+        actName: {
+            en: 'BLACK CAT',
+            zh: '黑 猫'
+        },
+        username: {
+            en: 'Username',
+            zh: '用户名'
+        },
+        password: {
+            en: 'Password',
+            zh: '密码'
+        },
+        login: {
+            en: 'SIGN IN',
+            zh: '登 录'
+        }
+    };
 
     async function handleSignIn () {
         if (!user) {
@@ -54,17 +76,17 @@ function Login (props) {
             <img className="login_back_pic" src={backPic} />
             <div className="login_cover"></div>
             <div className="login_desc_1">
-                FIND THE MOST LOVED ACTIVITIES
+                {textConfig.actDesc[lang]}
             </div>
             <div className="login_desc_2">
-                BLACK CAT
+                {textConfig.actName[lang]}
             </div>
             <div className="login_icon" ></div>
             <InputItem
                 className="login_input login_user"
                 value={user}
                 onChange={(val) => setUser(val)}
-                placeholder="Username"
+                placeholder={textConfig.username[lang]}
             >
             <div style={{ backgroundImage:`url(${userIcon})`, backgroundSize:'cover', height:'0.665rem', width:'0.665rem', filter: 'invert(100%)'}}/>
             </InputItem>
@@ -73,14 +95,22 @@ function Login (props) {
                 type="password"
                 value={pwd}
                 onChange={(val) => setPwd(val)}
-                placeholder="Password"
+                placeholder={textConfig.password[lang]}
             >
             <div style={{ backgroundImage:`url(${pwdIcon})`, backgroundSize:'cover', height:'0.665rem', width:'0.665rem', filter: 'invert(100%)'}}/>
             </InputItem>
-            <Button type="primary" className="login_btn" activeClassName="login_btn_active" style={{ borderRadius: '0', color: '#453257', fontSize: '16px' }} onClick={handleSignIn}>SIGN IN</Button>
+            <Button type="primary" className="login_btn" activeClassName="login_btn_active" style={{ borderRadius: '0', color: '#453257', fontSize: '16px' }} onClick={handleSignIn}>
+                { textConfig.login[lang] }
+            </Button>
         </div>
     );
 }
+
+const mapStateToProps = (state) => {
+    return {
+        lang: state.lang
+    };
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -92,6 +122,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default withRouter(connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(Login));

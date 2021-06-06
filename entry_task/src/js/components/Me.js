@@ -8,8 +8,6 @@ import { useState } from 'react';
 function  Me (props) {
     const [type, setType] = useState('likes');
 
-    
-
     return (
         <div className="me">
             <Top />

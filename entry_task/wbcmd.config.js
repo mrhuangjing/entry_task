@@ -10,5 +10,5 @@ module.exports = {
     },
     historyApiFallback: true,
     useDllBuild: true,
-    dllList: ['react', 'react-dom', 'react-router-dom', 'antd-mobile']
+    dllList: ['react', 'react-dom', 'react-router-dom', 'antd-mobile', 'react-redux']
 }

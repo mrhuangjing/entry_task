@@ -5,6 +5,7 @@ import tool from '../tools/tool.js';
 import model from '../api/model.js';
 import store from '../store';
 import moment from 'moment';
+import { connect } from 'react-redux';
 
 function Filter (props) {
     const [laterStart, setLaterStart] = useState(new Date());
@@ -36,6 +37,11 @@ function Filter (props) {
         }
     ];
     const [chosenDate, setChosenDate] = useState(0);
+    const { transferFilter, lang } = props;
+    const textConfig = {
+        date: {},
+        channel: {}
+    };
 
     function modifyDesc (dateIndex, channelDesc) {
         let desc = ['activities'];
@@ -126,7 +132,7 @@ function Filter (props) {
             date.start = dates[chosenDate].start;
             date.end = dates[chosenDate].end;
         }
-        props.transferFilter(date, selectedChannels, desc);
+        transferFilter(date, selectedChannels, desc);
     }
 
     return (
@@ -178,4 +184,12 @@ function Filter (props) {
     );
 }
 
-export default Filter;
+const mapStateToProps = (state) => {
+    return {
+        lang: state.lang
+    };
+};
+
+export default connect(
+    mapStateToProps
+)(Filter);

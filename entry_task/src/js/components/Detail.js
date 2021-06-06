@@ -8,6 +8,7 @@ import model from '../api/model.js';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import $ from 'n-zepto';
+import LazyLoad from 'react-lazyload';
 
 function Detail (props) {
     const [eid, setEid] = useState(null);
@@ -283,7 +284,9 @@ function Detail (props) {
                                 eventInfo.images.map((el, index) => {
                                     return (
                                         <div className="detail_article_imgList_item" key={index}>
-                                            <img src={el} />
+                                            <LazyLoad scrollContainer={'.detail_article_imgList'}>
+                                                <img src={el} />
+                                            </LazyLoad>
                                         </div>
                                     );
                                 })
@@ -339,7 +342,13 @@ function Detail (props) {
                     <div className="detail_related_going_content">
                         {
                             participants.map((el, index) => {
-                                return (<img className="detail_related_going_item" src={el} key={index} />);
+                                return (
+                                    <div key={index}>
+                                        <LazyLoad scrollContainer={'.detail'}>
+                                            <img className="detail_related_going_item" src={el} />
+                                        </LazyLoad>
+                                    </div>
+                                );
                             })
                         }
                     </div>
@@ -349,7 +358,13 @@ function Detail (props) {
                     <div className="detail_related_likes_content">
                         {
                             likes.map((el, index) => {
-                                return (<img className="detail_related_likes_item" src={el} key={index}/>);
+                                return (
+                                    <div className="detail_related_likes_item" key={index}>
+                                        <LazyLoad scrollContainer={'.detail'}>
+                                            <img src={el}/>
+                                        </LazyLoad>
+                                    </div>
+                                );
                             })
                         }
                     </div>
@@ -360,7 +375,9 @@ function Detail (props) {
                     comments.map((el, index) => {
                         return (
                             <div className="detail_comments_item" key={index}>
-                                <img className="detail_comments_item_avatar" src={el.avatar} />
+                                <LazyLoad scrollContainer={'.detail'}>
+                                    <img className="detail_comments_item_avatar" src={el.avatar} />
+                                </LazyLoad>
                                 <div className="detail_comments_item_username">{el.username}</div>
                                 <div className="detail_comments_item_time">{el.desc}</div>
                                 <div className="detail_comments_item_back" onClick={() => handleCommentPerson(index)}></div>

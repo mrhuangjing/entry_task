@@ -3,11 +3,10 @@ import { Icon, Toast } from 'antd-mobile';
 import { withRouter } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import model from '../../api/model.js';
-import $ from 'n-zepto';
-import tool from '../../tools/tool.js';
 import store from '../../store';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import LazyLoad from 'react-lazyload';
 
 function List (props) {
     const [dataList, setDataList] = useState([]);
@@ -71,7 +70,7 @@ function List (props) {
     }
 
     async function queryDataList (fromStart) {
-        console.log('+++', pageState.isLoading)
+        console.log('===', pageState.isLoading)
         if (pageState.isLoading || pageState.isEnd) return;
         setPageState({...pageState, isLoading: true});
 
@@ -169,7 +168,9 @@ function List (props) {
                     return (
                         <div className="list_content_item" key={ index } onClick={() => goDetail(index)}>
                             <div className="list_content_item_line">
-                                <img className="list_content_item_avatar" src={ el.avatar } />
+                                <LazyLoad scrollContainer=".list_content">
+                                    <img className="list_content_item_avatar" src={ el.avatar } />
+                                </LazyLoad>
                                 <div className="list_content_item_username">{ el.username }</div>
                                 <div className="list_content_item_channel">{ el.channel }</div>
                             </div>
@@ -177,7 +178,11 @@ function List (props) {
                                 { el.title }
                             </div>
                             {
-                                el.pic && <img className="list_content_item_pic" src={ el.pic } />
+                                el.pic && (
+                                    <LazyLoad scrollContainer=".list_content">
+                                        <img className="list_content_item_pic" src={ el.pic } />
+                                    </LazyLoad>
+                                )
                             }
                             <div className="list_content_item_time">{ el.time }</div>
                             <div className="list_content_item_con">
