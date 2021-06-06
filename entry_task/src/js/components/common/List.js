@@ -70,7 +70,6 @@ function List (props) {
     }
 
     async function queryDataList (fromStart) {
-        console.log('===', pageState.isLoading)
         if (pageState.isLoading || pageState.isEnd) return;
         setPageState({...pageState, isLoading: true});
 
@@ -94,7 +93,9 @@ function List (props) {
                     return true;
                 } else if (props.type === 'going' && el.me_going) {
                     return true;
-                } 
+                } else if (props.type === 'past') {
+                    return true;
+                }
                 // else if (props.type === 'past') {
                 //     const now = new Date();
                 //     const end = new Date(el.end_time);
@@ -126,7 +127,7 @@ function List (props) {
             });
 
             if (props.transferResult) {
-                props.transferResult(res.total);
+                props.transferResult(res.total, fromStart && !list.length);
             }
             if (!isUnmount) {
                 fromStart ? setDataList(list) : setDataList(dataList.concat(list));

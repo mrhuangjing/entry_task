@@ -21,6 +21,39 @@ function Detail (props) {
     const [comments, setComments] = useState([]);
     const [showCommentPanel, setShowCommentPanel] = useState(false);
     const [tabOn, setTabOn] = useState('');
+    const { userInfo, location, history, lang } = props;
+    const textConfig = {
+        tabs: {
+            details: {
+                en: 'Details',
+                zh: '详情'
+            },
+            participants: {
+                en: 'Participants',
+                zh: '参与者'
+            },
+            comments: {
+                en: 'Comments',
+                zh: '评论'
+            }
+        },
+        viewAll: {
+            en: 'VIEW ALL',
+            zh: '查看全部'
+        },
+        when: {
+            en: 'When',
+            zh: '时间'
+        },
+        where: {
+            en: 'Where',
+            zh: '地点'
+        },
+        btn: {
+            en: 'join',
+            zh: '加入'
+        }
+    };
 
     function handleViewAll () {
         setViewAll(true);
@@ -38,7 +71,7 @@ function Detail (props) {
         try {
             const res = await model.queryEventInfo({
                 id,
-                token: props.userInfo.token
+                token: userInfo.token
             });
             const obj = {
                 channel: res.channel.name,
@@ -52,7 +85,7 @@ function Detail (props) {
                 beginTime: moment(new Date(res.begin_time)).format('YYYY/MM/DD'),
                 beginTimeDetail: moment(new Date(res.begin_time)).format('hh:mm a').split(' '),
                 endTime: moment(new Date(res.end_time)).format('YYYY/MM/DD'),
-                beginTimeDetail: moment(new Date(res.end_time)).format('hh:mm a').split(' '),
+                endTimeDetail: moment(new Date(res.end_time)).format('hh:mm a').split(' '),
                 likesCount: res.likes_count,
                 goingCount: res.goings_count,
             };
@@ -70,7 +103,7 @@ function Detail (props) {
         try {
             const res = await model.queryParticipantList({
                 id,
-                token: props.userInfo.token
+                token: userInfo.token
             });
             const list = res.map(el => {
                 return el.avatar;
@@ -85,7 +118,7 @@ function Detail (props) {
         try {
             const res = await model.queryLikeList({
                 id,
-                token: props.userInfo.token,
+                token: userInfo.token,
                 params: {
                     offset: 0,
                     limit: 25
@@ -104,7 +137,7 @@ function Detail (props) {
         try {
             const res = await model.queryCommentList({
                 id,
-                token: props.userInfo.token,
+                token: userInfo.token,
                 params: {
                     offset: 0,
                     limit: 25
@@ -151,7 +184,7 @@ function Detail (props) {
         try {
             await model.commentEvent({
                 id: eid,
-                token: props.userInfo.token,
+                token: userInfo.token,
                 params: {
                     comment: commentStr
                 }
@@ -174,7 +207,7 @@ function Detail (props) {
         try {
             await model.likeEvent({
                 id: eid,
-                token: props.userInfo.token
+                token: userInfo.token
             });
             Toast.info('点赞成功～');
         } catch (e) {
@@ -186,7 +219,7 @@ function Detail (props) {
         try {
             await model.joinEvent({
                 id: eid,
-                token: props.userInfo.token
+                token: userInfo.token
             });
             Toast.info('加入活动成功～');
         } catch (e) {
@@ -195,15 +228,15 @@ function Detail (props) {
     }
 
     useEffect(() => {
-        if (props.location.query) {
-            const id = props.location.query.id;
+        if (location.query) {
+            const id = location.query.id;
             setEid(id);
             queryEventInfo(id);
             queryParticipantList(id);
             queryLikeList(id);
             queryCommentList(id);
         } else {
-            props.history.push('/home');
+            history.push('/home');
         }
     }, []);
 
@@ -263,15 +296,15 @@ function Detail (props) {
             <div className="detail_tabs_wrapper">
                 <div className="detail_tabs" id="tabs">
                     <a href="#details" className={["detail_tabs_item detail_tabs_item_details", tabOn == "d" ? "on" : ""].join(" ")}>
-                        <span>Details</span>
+                        <span>{textConfig.tabs.details[lang]}</span>
                     </a>
                     <span>|</span>
                     <a href="#participants" className={["detail_tabs_item detail_tabs_item_participants", tabOn == "p" ? "on" : ""].join(" ")}>
-                        <span>Participants</span>
+                        <span>{textConfig.tabs.participants[lang]}</span>
                     </a>
                     <span>|</span>
                     <a href="#comments" className={["detail_tabs_item detail_tabs_item_comments", tabOn == "c" ? "on" : ""].join(" ")}>
-                        <span>Comments</span>
+                        <span>{textConfig.tabs.comments[lang]}</span>
                     </a>
                 </div>
             </div>
@@ -298,7 +331,7 @@ function Detail (props) {
                         { eventInfo.content }
                         {
                             !viewAll && (<div className="detail_article_text_cover" onClick={handleViewAll}>
-                                <span>VIEW ALL</span>
+                                <span>{textConfig.viewAll[lang]}</span>
                             </div>)
                         }
                     </div>
@@ -306,7 +339,7 @@ function Detail (props) {
             </div>
             <div className="detail_when">
                 <div className="detail_when_content">
-                    <div className="detail_when_tag">When</div>
+                    <div className="detail_when_tag">{textConfig.when[lang]}</div>
                     <div className="detail_when_date">
                         <div className="detail_when_date_from">
                             <span>{eventInfo.beginTime}</span>
@@ -325,7 +358,7 @@ function Detail (props) {
             </div>
             <div className="detail_where" id="participants">
                 <div className="detail_where_content">
-                    <div className="detail_where_tag">Where</div>
+                    <div className="detail_where_tag">{textConfig.where[lang]}</div>
                     <div className="detail_where_area">{eventInfo.location}</div>
                     <div className="detail_where_street">{eventInfo.locationDetail}</div>
                     <div className="detail_where_map">
@@ -410,7 +443,7 @@ function Detail (props) {
                         <div className="detail_bottom_left_like" onClick={handleLike}></div>
                     </div>
                     <div className="detail_bottom_right" onClick={handleJoin}>
-                        <span>join</span>
+                        <span>{textConfig.btn[lang]}</span>
                     </div>
                 </div>)
             }
@@ -420,7 +453,8 @@ function Detail (props) {
 
 function mapStateToProps (state) {
     return {
-        userInfo: state.userInfo
+        userInfo: state.userInfo,
+        lang: state.lang
     };
 }
 

@@ -14,33 +14,49 @@ function Filter (props) {
     const dates = [
         {
             en: 'ANYTIME',
+            zh: '任何时候',
             start: '',
             end: ''
         }, {
             en: 'TODAY',
+            zh: '今天',
             start: moment().startOf('day').valueOf(),
             end: moment().endOf('day').valueOf()
         }, {
             en: 'TOMORROW',
+            zh: '明天',
             start: moment(new Date()).add(1,'days').valueOf(),
             end: moment(new Date()).add(1,'days').valueOf()
         }, {
             en: 'THIS WEEK',
+            zh: '本周',
             start: moment().startOf('isoWeek').valueOf(),
             end: moment().endOf('isoWeek').valueOf()
         }, {
             en: 'THIS MONTH',
+            zh: '本月',
             start: moment().startOf('month').valueOf(),
             end: moment().endOf('month').valueOf()
         }, {
-            en: 'LATER'
+            en: 'LATER',
+            zh: '本日及之后'
         }
     ];
     const [chosenDate, setChosenDate] = useState(0);
     const { transferFilter, lang } = props;
     const textConfig = {
-        date: {},
-        channel: {}
+        date: {
+            title: {
+                en: 'DATE',
+                zh: '日  期'
+            }
+        },
+        channel: {
+            title: {
+                en: 'CHANNEL',
+                zh: '频  道'
+            }
+        }
     };
 
     function modifyDesc (dateIndex, channelDesc) {
@@ -137,11 +153,11 @@ function Filter (props) {
 
     return (
         <div className="filter">
-            <div className="filter_date">DATE</div>
+            <div className="filter_date">{textConfig.date.title[lang]}</div>
             <div className="filter_date_content">
                 {
                     dates.map((el, index) => {
-                        return <div className={["filter_date_content_opt", index == chosenDate ? "on" : ""].join(" ")} key={index} onClick={() => handleSelectDate(index)}>{el.en}</div>;
+                        return <div className={["filter_date_content_opt", index == chosenDate ? "on" : ""].join(" ")} key={index} onClick={() => handleSelectDate(index)}>{el[lang]}</div>;
                     })
                 }
             </div>
@@ -168,7 +184,7 @@ function Filter (props) {
                     </DatePicker>
                 </div>)
             }
-            <div className="filter_channel">CHANNEL</div>
+            <div className="filter_channel">{textConfig.channel.title[lang]}</div>
             <div className="filter_channel_content">
                 {
                     channels.map((el, index) => {

@@ -13,13 +13,14 @@ function Home (props) {
     const [filterDesc, setFilterDesc] = useState('No activities anytime');
     const [showResult, setShowResult] = useState(false);
     const [resultNum, setResultNum] = useState(-1);
+    const { userInfo, history } = props;
 
     function handleSearchClick () {
         setShowFilter(!showFilter);
     }
 
     function goMe () {
-        props.history.push('/me');
+        history.push('/me');
     }
 
     function handleSearch (date, channel, desc) {
@@ -44,7 +45,7 @@ function Home (props) {
                 <div className="home_top">
                     <div className="home_top_search" onClick={() => handleSearchClick()}></div>
                     <div className="home_top_cat"></div>
-                    <img className="home_top_me" src={props.userInfo.user.avatar} onClick={goMe}/>
+                    <img className="home_top_me" src={userInfo.user.avatar} onClick={goMe}/>
                 </div>
                 {
                     showResult && (<div className="home_result">
