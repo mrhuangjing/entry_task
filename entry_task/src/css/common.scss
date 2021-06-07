@@ -26,7 +26,8 @@ html {
 }
 @media screen and (max-width: 310px) {
     html {
-        font-size:17.06667px
+        // font-size:17.06667px
+        font-size:19.4px
     }
 }
 @media screen and (min-width: 540px) {
@@ -37,7 +38,8 @@ html {
 body {
     background-color: #fff;
     margin: 0 auto !important;
-    min-width: 320px;
+    // min-width: 320px;
+    min-width: 310px;
     max-width: 540px;
     font-size: 14px;
     font-family: "PingFang SC";

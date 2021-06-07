@@ -83,6 +83,7 @@ function create (...args) {
             msg: '响应状态码status异常'
         };
     }, function (error) {
+        responseInterceptor(null, error);
         // 对响应错误做点什么
         return Promise.reject(error);
     });

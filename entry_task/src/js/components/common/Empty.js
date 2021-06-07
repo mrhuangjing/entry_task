@@ -1,13 +1,12 @@
-import '../../../css/Empty.scss';
+import '../../../css/Empty.scss'
 
 function Empty () {
-
-    return (
-        <div className="empty" >
-            <div className="empty_ball"></div>
-            <div className="empty_desc">No activity found</div>
-        </div>
-    );
+  return (
+    <div className='empty'>
+      <div className='empty_ball' />
+      <div className='empty_desc'>No activity found</div>
+    </div>
+  )
 }
 
-export default Empty;
+export default Empty
