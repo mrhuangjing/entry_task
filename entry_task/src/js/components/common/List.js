@@ -7,6 +7,7 @@ import store from '../../store'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import LazyLoad from 'react-lazyload'
+import Empty from './Empty.js'
 
 function List (props) {
   const [dataList, setDataList] = useState([])
@@ -126,7 +127,7 @@ function List (props) {
       })
 
       if (props.transferResult) {
-        props.transferResult(res.total, fromStart && !list.length)
+        props.transferResult(res.total)
       }
       if (!isUnmount) {
         fromStart ? setDataList(list) : setDataList(dataList.concat(list))
@@ -137,9 +138,6 @@ function List (props) {
       setPageState({ ...pageState, pageNum: (fromStart ? 0 : pageState.pageNum) + pageState.pageSize, isLoading: false })
     } catch (e) {
       setPageState({ ...pageState, isEnd: true })
-      if (props.transferResult && fromStart) {
-        props.transferResult(0)
-      }
     }
   }
 
@@ -164,48 +162,53 @@ function List (props) {
   }
 
   return (
-    <div className='list_content' style={{ height: `${window.innerHeight - 50}px` }} onScroll={onScrollNext}>
+    <>
       {
-                dataList.map((el, index) => {
-                  return (
-                    <div className='list_content_item' key={index} onClick={() => goDetail(index)}>
-                      <div className='list_content_item_line'>
-                        <LazyLoad scrollContainer='.list_content'>
-                          <img className='list_content_item_avatar' src={el.avatar} />
-                        </LazyLoad>
-                        <div className='list_content_item_username'>{el.username}</div>
-                        <div className='list_content_item_channel'>{el.channel}</div>
-                      </div>
-                      <div className='list_content_item_title' style={{ width: `${el.pic ? '10.8rem' : '14.4rem'}` }}>
-                        {el.title}
-                      </div>
-                      {
-                                el.pic && (
-                                  <LazyLoad scrollContainer='.list_content'>
-                                    <img className='list_content_item_pic' src={el.pic} />
-                                  </LazyLoad>
-                                )
-                            }
-                      <div className='list_content_item_time'>{el.time}</div>
-                      <div className='list_content_item_con'>
-                        {el.content}
-                      </div>
-                      <div className='list_content_item_line'>
-                        <div className={['list_content_item_actIcon', el.isGoing ? 'on' : ''].join(' ')} onClick={(e) => handleCheckClick(e, index)} />
-                        <div className={['list_content_item_actDesc', el.isGoing ? 'on' : ''].join(' ')} onClick={(e) => handleCheckClick(e, index)}>{el.isGoing ? 'I am going!' : `${el.goingsCount} Going`}</div>
-                        <div className={['list_content_item_likeIcon', el.isLike ? 'on' : ''].join(' ')} onClick={(e) => handleHeartClick(e, index)} />
-                        <div className={['list_content_item_likeDesc', el.isLike ? 'on' : ''].join(' ')} onClick={(e) => handleHeartClick(e, index)}>{el.isLike ? 'I like it' : `${el.likesCount} Likes`}</div>
-                      </div>
-                    </div>
-                  )
-                })
-            }
-      {
-                (dataList.length && pageState.isEnd) ? (<div className='list_content_loading'>
-                  <Icon type='loading' className='list_content_loading_icon' />
-                </div>) : ''
-            }
-    </div>
+        dataList.length > 0 ?
+        (<div className='list_content' style={{ height: `${window.innerHeight - 50}px` }} onScroll={onScrollNext}>
+          {
+                    dataList.map((el, index) => {
+                      return (
+                        <div className='list_content_item' key={index} onClick={() => goDetail(index)}>
+                          <div className='list_content_item_line'>
+                            <LazyLoad scrollContainer='.list_content'>
+                              <img className='list_content_item_avatar' src={el.avatar} />
+                            </LazyLoad>
+                            <div className='list_content_item_username'>{el.username}</div>
+                            <div className='list_content_item_channel'>{el.channel}</div>
+                          </div>
+                          <div className='list_content_item_title' style={{ width: `${el.pic ? '10.8rem' : '14.4rem'}` }}>
+                            {el.title}
+                          </div>
+                          {
+                                    el.pic && (
+                                      <LazyLoad scrollContainer='.list_content'>
+                                        <img className='list_content_item_pic' src={el.pic} />
+                                      </LazyLoad>
+                                    )
+                                }
+                          <div className='list_content_item_time'>{el.time}</div>
+                          <div className='list_content_item_con'>
+                            {el.content}
+                          </div>
+                          <div className='list_content_item_line'>
+                            <div className={['list_content_item_actIcon', el.isGoing ? 'on' : ''].join(' ')} onClick={(e) => handleCheckClick(e, index)} />
+                            <div className={['list_content_item_actDesc', el.isGoing ? 'on' : ''].join(' ')} onClick={(e) => handleCheckClick(e, index)}>{el.isGoing ? 'I am going!' : `${el.goingsCount} Going`}</div>
+                            <div className={['list_content_item_likeIcon', el.isLike ? 'on' : ''].join(' ')} onClick={(e) => handleHeartClick(e, index)} />
+                            <div className={['list_content_item_likeDesc', el.isLike ? 'on' : ''].join(' ')} onClick={(e) => handleHeartClick(e, index)}>{el.isLike ? 'I like it' : `${el.likesCount} Likes`}</div>
+                          </div>
+                        </div>
+                      )
+                    })
+                }
+          {
+                    (dataList.length && pageState.isEnd) ? (<div className='list_content_loading'>
+                      <Icon type='loading' className='list_content_loading_icon' />
+                    </div>) : ''
+                }
+        </div>) : (<Empty />)
+      }
+    </>
   )
 }
 

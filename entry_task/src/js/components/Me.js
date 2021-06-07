@@ -1,13 +1,11 @@
 import '../../css/Me.scss'
 import Top from './common/Top.js'
-import Empty from './common/Empty.js'
 import List from './common/List.js'
 import { connect } from 'react-redux'
 import { useState } from 'react'
 
 function Me (props) {
   const [type, setType] = useState('likes')
-  const [showEmpty, setShowEmpty] = useState(false)
   const { userInfo, lang } = props
   const textConfig = {
     tabs: {
@@ -26,25 +24,6 @@ function Me (props) {
     }
   }
 
-  function handleResult (total, noResult) {
-    noResult && setShowEmpty(true)
-  }
-
-  function handleLikes () {
-    setType('likes')
-    setShowEmpty(false)
-  }
-
-  function handleGoing () {
-    setType('going')
-    setShowEmpty(false)
-  }
-
-  function handlePast () {
-    setType('past')
-    setShowEmpty(false)
-  }
-
   return (
     <>
       <Top />
@@ -59,21 +38,19 @@ function Me (props) {
           </div>
         </div>
         <div className='me_tabs'>
-          <a href='#likes' className={['me_tabs_item me_tabs_item_likes', type == 'likes' ? 'on' : ''].join(' ')} onClick={handleLikes}>
+          <a href='#likes' className={['me_tabs_item me_tabs_item_likes', type == 'likes' ? 'on' : ''].join(' ')} onClick={() => setType('likes')}>
             <span>{textConfig.tabs.likes[lang]}</span>
           </a>
           <span>|</span>
-          <a href='#going' className={['me_tabs_item me_tabs_item_going', type == 'going' ? 'on' : ''].join(' ')} onClick={handleGoing}>
+          <a href='#going' className={['me_tabs_item me_tabs_item_going', type == 'going' ? 'on' : ''].join(' ')} onClick={() => setType('going')}>
             <span>{textConfig.tabs.going[lang]}</span>
           </a>
           <span>|</span>
-          <a href='#past' className={['me_tabs_item me_tabs_item_past', type == 'past' ? 'on' : ''].join(' ')} onClick={handlePast}>
+          <a href='#past' className={['me_tabs_item me_tabs_item_past', type == 'past' ? 'on' : ''].join(' ')} onClick={() => setType('past')}>
             <span>{textConfig.tabs.past[lang]}</span>
           </a>
         </div>
-        {
-                  showEmpty ? (<Empty />) : (<List type={type} transferResult={handleResult} />)
-              }
+        <List type={type} />
       </div>
     </>
   )

@@ -3,7 +3,6 @@ import { useState } from 'react'
 import Filter from './Filter.js'
 import { withRouter } from 'react-router-dom'
 import List from './common/List.js'
-import Empty from './common/Empty.js'
 import { connect } from 'react-redux'
 
 function Home (props) {
@@ -59,9 +58,6 @@ function Home (props) {
                         </span>
                       </div>
                     </div>)
-                }
-        {
-                    resultNum == 0 && (<Empty />)
                 }
         <List date={filterDate} channel={filterChannel} transferResult={(total) => setResultNum(total)} />
       </div>
